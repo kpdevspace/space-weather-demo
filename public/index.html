@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <style>
     :root{--bg:#091225;--bg2:#112a4e;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);--text:#eaf2ff;--muted:#a6b9dd;--green:#35d49a;--yellow:#f8c14b;--red:#ff657d}
     *{box-sizing:border-box} body{margin:0;font-family:'Kanit',sans-serif;color:var(--text);background:radial-gradient(900px 500px at 80% -10%,#225fb2 0,transparent 55%),linear-gradient(150deg,var(--bg),var(--bg2));min-height:100vh}
@@ -17,7 +18,12 @@
     .label{color:var(--muted);font-size:.9rem}.value{font-size:clamp(1.2rem,2.5vw,1.9rem);font-weight:700;margin-top:6px}.hint{font-size:.86rem;color:#8fb0e8;margin-top:4px}
     .low{color:var(--green)}.medium{color:var(--yellow)}.high{color:var(--red)}
     .timeline{display:grid;gap:8px}.event{border-left:3px solid var(--line);padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04)}.event.low{border-left-color:var(--green)}.event.medium{border-left-color:var(--yellow)}.event.high{border-left-color:var(--red)}
-    .map{height:220px;border-radius:12px;border:1px dashed rgba(255,255,255,.25);display:grid;place-items:center;color:var(--muted);background:linear-gradient(130deg,rgba(108,164,255,.15),rgba(255,255,255,.02));text-align:center}
+    .map{height:280px;border-radius:12px;border:1px solid rgba(255,255,255,.18);overflow:hidden;background:#0b1630}
+.leaflet-container{background:#0b1630}
+.map-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:.82rem;color:var(--muted)}
+.map-legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.low{background:var(--green)}.dot.medium{background:var(--yellow)}.dot.high{background:var(--red)}
     table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left;font-size:.9rem}th{color:var(--muted);font-weight:500}
     .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}button{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:10px;padding:8px 11px;cursor:pointer;font-family:inherit}
     button.primary{background:linear-gradient(135deg,#2d62c0,#4e8ef2);border:0}
@@ -63,12 +69,18 @@
       </div>
 
       <div class="card">
-        <div style="font-weight:600;margin-bottom:8px">Map Placeholder: Thailand Risk Zones</div>
-        <div class="map">ต่อยอดได้โดยเชื่อม Leaflet/Mapbox + ชั้นข้อมูลจังหวัด</div>
+        <div style="font-weight:600;margin-bottom:8px">ชั้นข้อมูลจังหวัด (Leaflet Demo)</div>
+        <div id="riskMap" class="map"></div>
+        <div class="map-legend">
+          <span><i class="dot low"></i> ต่ำ</span>
+          <span><i class="dot medium"></i> กลาง</span>
+          <span><i class="dot high"></i> สูง</span>
+        </div>
       </div>
     </section>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="./app.js"></script>
 </body>
 </html>
