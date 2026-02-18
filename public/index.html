@@ -18,7 +18,7 @@
     .label{color:var(--muted);font-size:.9rem}.value{font-size:clamp(1.2rem,2.5vw,1.9rem);font-weight:700;margin-top:6px}.hint{font-size:.86rem;color:#8fb0e8;margin-top:4px}
     .low{color:var(--green)}.medium{color:var(--yellow)}.high{color:var(--red)}
     .timeline{display:grid;gap:8px}.event{border-left:3px solid var(--line);padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04)}.event.low{border-left-color:var(--green)}.event.medium{border-left-color:var(--yellow)}.event.high{border-left-color:var(--red)}
-    .map{height:280px;border-radius:12px;border:1px solid rgba(255,255,255,.18);overflow:hidden;background:#0b1630}
+    .map{height:540px;border-radius:12px;border:1px solid rgba(255,255,255,.18);overflow:hidden;background:#0b1630}
 .leaflet-container{background:#0b1630}
 .map-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:.82rem;color:var(--muted)}
 .map-legend span{display:inline-flex;align-items:center;gap:6px}
@@ -68,8 +68,8 @@
         </div>
       </div>
 
-      <div class="card">
-        <div style="font-weight:600;margin-bottom:8px">ชั้นข้อมูลจังหวัด (Leaflet Demo)</div>
+      <div class="card" style="grid-column:1 / -1;">
+        <div style="font-weight:600;margin-bottom:8px">ชั้นข้อมูลครบ 77 จังหวัด (GeoJSON จริง)</div>
         <div id="riskMap" class="map"></div>
         <div class="map-legend">
           <span><i class="dot low"></i> ต่ำ</span>

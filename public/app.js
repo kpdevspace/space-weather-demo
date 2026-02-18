@@ -9,59 +9,45 @@ function setText(id, text) {
   if (el) el.textContent = text;
 }
 
-const provinceFeatures = {
-  type: 'FeatureCollection',
-  features: [
-    { type: 'Feature', properties: { name: 'เชียงใหม่' }, geometry: { type: 'Polygon', coordinates: [[[98.72,18.95],[99.22,18.95],[99.22,18.55],[98.72,18.55],[98.72,18.95]]] } },
-    { type: 'Feature', properties: { name: 'ขอนแก่น' }, geometry: { type: 'Polygon', coordinates: [[[102.65,16.65],[103.15,16.65],[103.15,16.25],[102.65,16.25],[102.65,16.65]]] } },
-    { type: 'Feature', properties: { name: 'กรุงเทพมหานคร' }, geometry: { type: 'Polygon', coordinates: [[[100.35,13.95],[100.75,13.95],[100.75,13.55],[100.35,13.55],[100.35,13.95]]] } },
-    { type: 'Feature', properties: { name: 'ชลบุรี' }, geometry: { type: 'Polygon', coordinates: [[[100.78,13.45],[101.28,13.45],[101.28,13.05],[100.78,13.05],[100.78,13.45]]] } },
-    { type: 'Feature', properties: { name: 'สงขลา' }, geometry: { type: 'Polygon', coordinates: [[[100.3,7.3],[100.9,7.3],[100.9,6.9],[100.3,6.9],[100.3,7.3]]] } },
-    { type: 'Feature', properties: { name: 'ภูเก็ต' }, geometry: { type: 'Polygon', coordinates: [[[98.2,8.0],[98.5,8.0],[98.5,7.7],[98.2,7.7],[98.2,8.0]]] } },
-  ]
-};
-
 let map;
 let provinceLayer;
+let provinceGeoJson;
 
 function initMap() {
   if (map) return;
-  map = L.map('riskMap', { zoomControl: true, scrollWheelZoom: false }).setView([13.6, 101], 6);
+  map = L.map('riskMap', { zoomControl: true, scrollWheelZoom: true }).setView([13.5, 101], 6);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; OpenStreetMap',
   }).addTo(map);
 }
 
-function provinceRiskModel(overallRisk) {
+function hashString(input) {
+  let h = 2166136261;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+  }
+  return Math.abs(h >>> 0);
+}
+
+function provinceRiskModel(overallRisk, provinceName) {
+  // สร้างความต่างรายจังหวัดแบบ deterministic เพื่อเดโม
+  const seed = hashString(String(provinceName || '')) % 100;
   if (overallRisk === 'สูง') {
-    return {
-      'กรุงเทพมหานคร': 'สูง',
-      'ชลบุรี': 'สูง',
-      'ขอนแก่น': 'กลาง',
-      'เชียงใหม่': 'กลาง',
-      'สงขลา': 'กลาง',
-      'ภูเก็ต': 'ต่ำ',
-    };
+    if (seed < 45) return 'สูง';
+    if (seed < 80) return 'กลาง';
+    return 'ต่ำ';
   }
   if (overallRisk === 'กลาง') {
-    return {
-      'กรุงเทพมหานคร': 'กลาง',
-      'ชลบุรี': 'กลาง',
-      'ขอนแก่น': 'กลาง',
-      'เชียงใหม่': 'ต่ำ',
-      'สงขลา': 'ต่ำ',
-      'ภูเก็ต': 'ต่ำ',
-    };
+    if (seed < 20) return 'สูง';
+    if (seed < 70) return 'กลาง';
+    return 'ต่ำ';
   }
-  return {
-    'กรุงเทพมหานคร': 'ต่ำ',
-    'ชลบุรี': 'ต่ำ',
-    'ขอนแก่น': 'ต่ำ',
-    'เชียงใหม่': 'ต่ำ',
-    'สงขลา': 'ต่ำ',
-    'ภูเก็ต': 'ต่ำ',
-  };
+  // overall ต่ำ
+  if (seed < 8) return 'สูง';
+  if (seed < 32) return 'กลาง';
+  return 'ต่ำ';
 }
 
 function colorByRisk(risk) {
@@ -70,30 +56,43 @@ function colorByRisk(risk) {
   return '#35d49a';
 }
 
-function renderProvinceLayer(overallRisk) {
+async function loadProvinceGeoJson() {
+  if (provinceGeoJson) return provinceGeoJson;
+  const res = await fetch('./data/th-provinces.geojson', { cache: 'force-cache' });
+  if (!res.ok) throw new Error(`โหลดชั้นข้อมูลจังหวัดไม่สำเร็จ: ${res.status}`);
+  provinceGeoJson = await res.json();
+  return provinceGeoJson;
+}
+
+async function renderProvinceLayer(overallRisk) {
   initMap();
-  const riskByProvince = provinceRiskModel(overallRisk);
+  const fc = await loadProvinceGeoJson();
 
-  if (provinceLayer) {
-    provinceLayer.remove();
-  }
+  if (provinceLayer) provinceLayer.remove();
 
-  provinceLayer = L.geoJSON(provinceFeatures, {
+  provinceLayer = L.geoJSON(fc, {
     style: (feature) => {
-      const risk = riskByProvince[feature.properties.name] || 'ต่ำ';
+      const name = feature.properties?.name || 'Unknown';
+      const risk = provinceRiskModel(overallRisk, name);
       return {
-        color: '#dce7ff',
-        weight: 1,
+        color: '#e5eeff',
+        weight: 0.8,
         fillColor: colorByRisk(risk),
-        fillOpacity: 0.58,
+        fillOpacity: 0.62,
       };
     },
     onEachFeature: (feature, layer) => {
-      const name = feature.properties.name;
-      const risk = riskByProvince[name] || 'ต่ำ';
-      layer.bindPopup(`<b>${name}</b><br/>ระดับความเสี่ยง: <b>${risk}</b>`);
+      const name = feature.properties?.name || 'Unknown';
+      const region = feature.properties?.region || '-';
+      const risk = provinceRiskModel(overallRisk, name);
+      layer.bindPopup(`<b>${name}</b><br/>ภูมิภาค: ${region}<br/>ระดับความเสี่ยง: <b>${risk}</b>`);
     },
   }).addTo(map);
+
+  const bounds = provinceLayer.getBounds();
+  if (bounds.isValid()) {
+    map.fitBounds(bounds, { padding: [14, 14] });
+  }
 }
 
 function renderTimeline(items) {
@@ -118,7 +117,7 @@ function renderIncidents(rows) {
   });
 }
 
-function applyData(data) {
+async function applyData(data) {
   setText('kp', Number.isFinite(data.kp) ? data.kp.toFixed(1) : '-');
   setText('sw', Number.isFinite(data.solarWind) ? Math.round(data.solarWind) : '-');
   setText('xr', data.xrayClass || '-');
@@ -138,7 +137,11 @@ function applyData(data) {
 
   renderTimeline(data.timeline || []);
   renderIncidents(data.incidents || []);
-  renderProvinceLayer(data.riskLevel || 'ต่ำ');
+  try {
+    await renderProvinceLayer(data.riskLevel || 'ต่ำ');
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 async function refreshData() {
@@ -147,9 +150,9 @@ async function refreshData() {
     const res = await fetch('/api/space-weather', { cache: 'no-store' });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();
-    applyData(data);
+    await applyData(data);
   } catch (err) {
-    applyData({
+    await applyData({
       kp: 4.0,
       solarWind: 500,
       xrayClass: 'C2.0',

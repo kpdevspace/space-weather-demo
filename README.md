@@ -4,6 +4,7 @@
 - Frontend: `public/index.html` + `public/app.js`
 - Backend: `server.js` (Node.js built-in HTTP, ไม่ต้องติดตั้งแพ็กเกจเพิ่ม)
 - Data Source: NOAA SWPC (real-time-ish) พร้อม fallback อัตโนมัติ
+- Province Layer: `public/data/th-provinces.geojson` (ครบ 77 จังหวัด)
 
 ## Run
 
