@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>คู่มือคำอธิบายตัวแปร | Space Weather Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#091225;--bg2:#112a4e;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.16);--text:#eaf2ff;--muted:#a6b9dd;--green:#35d49a;--yellow:#f8c14b;--red:#ff657d;--blue:#7db4ff}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Kanit',sans-serif;color:var(--text);background:radial-gradient(900px 500px at 85% -10%,#225fb2 0,transparent 55%),linear-gradient(150deg,var(--bg),var(--bg2));min-height:100vh}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 14px 30px}
+    .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .title{font-size:clamp(1.25rem,2.9vw,2rem);font-weight:700}
+    .sub{color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-decoration:none}
+    .btn:hover{background:rgba(255,255,255,.12)}
+
+    .notice{border:1px solid rgba(125,180,255,.35);background:rgba(125,180,255,.12);padding:12px 14px;border-radius:14px;color:#d9e9ff;margin-bottom:14px}
+
+    .grid{display:grid;gap:12px}
+    .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);border-radius:16px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+    h2{margin:0 0 10px;font-size:1.15rem;color:#e9f3ff}
+    h3{margin:0 0 8px;font-size:1.02rem;color:#d5e8ff}
+    .muted{color:var(--muted);font-size:.95rem}
+
+    .term{padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:8px}
+    .term b{color:#fff}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;margin-left:8px;border:1px solid rgba(255,255,255,.2);color:#dbeaff}
+
+    .risk-row{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{padding:6px 10px;border-radius:999px;font-weight:600;font-size:.9rem}
+    .low{background:rgba(53,212,154,.2);color:var(--green);border:1px solid rgba(53,212,154,.4)}
+    .med{background:rgba(248,193,75,.18);color:var(--yellow);border:1px solid rgba(248,193,75,.45)}
+    .high{background:rgba(255,101,125,.16);color:var(--red);border:1px solid rgba(255,101,125,.45)}
+
+    ul{margin:8px 0 0 18px;padding:0}
+    li{margin-bottom:6px}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,.12);vertical-align:top}
+    th{color:var(--muted);font-weight:500;font-size:.92rem}
+
+    .footer{margin-top:14px;color:var(--muted);font-size:.86rem}
+
+    @media(max-width:900px){.two{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="title">📘 Help: คู่มือคำอธิบายตัวแปรและศัพท์เฉพาะ</div>
+        <div class="sub">สำหรับแดชบอร์ด Space Weather Early Warning (ภาษาไทย เข้าใจง่าย)</div>
+      </div>
+      <a class="btn" href="/">← กลับหน้า Dashboard</a>
+    </div>
+
+    <div class="notice">
+      หน้านี้ช่วยอธิบาย <b>ความหมาย</b>, <b>ที่มา</b> และ <b>การนำไปใช้งาน</b> ของข้อมูลบนแดชบอร์ด
+      เพื่อให้ผู้ใช้ทั่วไป, ผู้บริหาร, และทีมปฏิบัติการ ตีความได้ตรงกัน
+    </div>
+
+    <section class="grid two">
+      <div class="card">
+        <h2>1) ตัวแปรหลักบนหน้า Dashboard</h2>
+
+        <div class="term"><b>Kp Index</b><span class="tag">ดัชนีกิจกรรมสนามแม่เหล็กโลก</span><br>
+          <span class="muted">บอกระดับความปั่นป่วนของสนามแม่เหล็กโลกจากอิทธิพลลมสุริยะ (ช่วงค่า 0–9)</span>
+          <ul>
+            <li><b>ที่มา:</b> NOAA SWPC</li>
+            <li><b>อ่านค่าแบบง่าย:</b> ยิ่งสูง ยิ่งมีโอกาสกระทบระบบสื่อสาร/นำทาง</li>
+            <li><b>ใช้ตัดสินใจ:</b> ถ้า Kp ≥ 5 ให้เพิ่มความถี่ในการเฝ้าระวัง GNSS</li>
+          </ul>
+        </div>
+
+        <div class="term"><b>Solar Wind (km/s)</b><span class="tag">ความเร็วลมสุริยะ</span><br>
+          <span class="muted">ความเร็วอนุภาคจากดวงอาทิตย์ที่พุ่งมายังโลก</span>
+          <ul>
+            <li><b>ที่มา:</b> NOAA SWPC (พลาสมา)</li>
+            <li><b>อ่านค่าแบบง่าย:</b> ค่าเพิ่มเร็ว = โอกาสเกิดความปั่นป่วนเพิ่ม</li>
+            <li><b>ใช้ตัดสินใจ:</b> หาก > 600 km/s ให้เตรียมแผนรองรับสัญญาณแปรปรวน</li>
+          </ul>
+        </div>
+
+        <div class="term"><b>X-ray Flux Class</b><span class="tag">ระดับการปะทุรังสีเอกซ์</span><br>
+          <span class="muted">บอกความแรงของการปะทุจากดวงอาทิตย์ด้วยระดับ A, B, C, M, X (แรงขึ้นตามลำดับ)</span>
+          <ul>
+            <li><b>ที่มา:</b> NOAA GOES X-ray</li>
+            <li><b>อ่านค่าแบบง่าย:</b> M และ X คือระดับที่ควรเฝ้าระวังใกล้ชิด</li>
+            <li><b>ใช้ตัดสินใจ:</b> เมื่อขึ้น M/X ให้แจ้งทีมสื่อสารและการบินทันที</li>
+          </ul>
+        </div>
+
+        <div class="term"><b>Risk Level</b><span class="tag">ระดับความเสี่ยงรวม</span><br>
+          <span class="muted">ผลประเมินรวมจาก Kp + Solar Wind + X-ray เพื่อสื่อสารภาพรวมให้เข้าใจเร็ว</span>
+          <ul>
+            <li><b>ที่มา:</b> ระบบประเมินภายใน (rule-based)</li>
+            <li><b>ใช้ตัดสินใจ:</b> ใช้เป็นสัญญาณเริ่มต้นก่อนลงรายละเอียดรายจังหวัด</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2) การแปลผลระดับความเสี่ยง (Low/Medium/High)</h2>
+        <div class="risk-row" style="margin-bottom:10px">
+          <div class="pill low">ต่ำ (เขียว)</div>
+          <div class="pill med">กลาง (เหลือง)</div>
+          <div class="pill high">สูง (แดง)</div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>ระดับ</th><th>ความหมาย</th><th>คำแนะนำการใช้งาน</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="pill low">ต่ำ</span></td>
+              <td>สถานการณ์ค่อนข้างปกติ ผลกระทบจำกัด</td>
+              <td>ติดตามตามรอบปกติ และตรวจความพร้อมระบบตามแผน</td>
+            </tr>
+            <tr>
+              <td><span class="pill med">กลาง</span></td>
+              <td>เริ่มมีโอกาสกระทบคุณภาพสัญญาณบางช่วงเวลา</td>
+              <td>เพิ่มการเฝ้าระวัง แจ้งหน่วยงานที่เกี่ยวข้องล่วงหน้า</td>
+            </tr>
+            <tr>
+              <td><span class="pill high">สูง</span></td>
+              <td>มีความเสี่ยงสูงต่อระบบนำทาง/สื่อสารบางประเภท</td>
+              <td>เปิดแผนปฏิบัติการฉุกเฉิน ติดตามถี่ และสื่อสารผู้มีส่วนเกี่ยวข้องทันที</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid two" style="margin-top:12px">
+      <div class="card">
+        <h2>3) ศัพท์เฉพาะที่พบในระบบ</h2>
+        <div class="term"><b>Space Weather</b> = สภาพอวกาศที่เกิดจากกิจกรรมบนดวงอาทิตย์และผลต่อโลก</div>
+        <div class="term"><b>GNSS</b> = ระบบระบุตำแหน่งผ่านดาวเทียม (เช่น GPS)</div>
+        <div class="term"><b>Geomagnetic Activity</b> = ระดับการรบกวนสนามแม่เหล็กโลก</div>
+        <div class="term"><b>Ionosphere</b> = ชั้นบรรยากาศที่มีประจุไฟฟ้า มีผลต่อคลื่นวิทยุและสัญญาณนำทาง</div>
+        <div class="term"><b>GeoJSON</b> = รูปแบบข้อมูลภูมิศาสตร์ที่ใช้แสดงขอบเขตจังหวัดบนแผนที่</div>
+      </div>
+
+      <div class="card">
+        <h2>4) ที่มาข้อมูล (Data Sources)</h2>
+        <ul>
+          <li><b>NOAA SWPC:</b> แหล่งข้อมูลสภาพอวกาศหลักสำหรับ Kp, Solar Wind, X-ray</li>
+          <li><b>GOES Satellite Data:</b> ข้อมูลรังสีเอกซ์จากดาวเทียมสำรวจสภาพอวกาศ</li>
+          <li><b>GeoJSON จังหวัดไทย:</b> ใช้แสดงผลพื้นที่ 77 จังหวัดเพื่อประเมินความเสี่ยงเชิงพื้นที่</li>
+        </ul>
+        <h3 style="margin-top:12px">ข้อควรทราบ</h3>
+        <ul>
+          <li>ข้อมูลบางตัวมีความหน่วงตามรอบเผยแพร่ของต้นทาง</li>
+          <li>ระดับความเสี่ยงเป็นการประเมินเชิงสนับสนุนการตัดสินใจ ไม่ใช่คำยืนยันความเสียหาย</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+      <h2>5) แนวทางนำไปใช้งานจริง (Operational Use)</h2>
+      <div class="grid two">
+        <div>
+          <h3>สำหรับผู้บริหาร</h3>
+          <ul>
+            <li>ดู Risk Level รวมเพื่อประเมินภาพรวมสถานการณ์ทันที</li>
+            <li>กำหนดระดับการตอบสนองขององค์กรตามสีความเสี่ยง</li>
+          </ul>
+
+          <h3>สำหรับทีมเทคนิค/ปฏิบัติการ</h3>
+          <ul>
+            <li>ติดตาม Kp, Solar Wind, X-ray ควบคู่กัน ไม่ดูตัวเดียว</li>
+            <li>ใช้แผนที่จังหวัดเพื่อระบุพื้นที่เฝ้าระวังเชิงลำดับความสำคัญ</li>
+          </ul>
+        </div>
+        <div>
+          <h3>สำหรับงานสื่อสารแจ้งเตือน</h3>
+          <ul>
+            <li>เมื่อความเสี่ยงขึ้น “กลาง/สูง” ให้ส่งแจ้งเตือนพร้อมคำแนะนำสั้นๆ</li>
+            <li>เน้นภาษาง่าย: “คาดว่าสัญญาณอาจแกว่งชั่วคราว” มากกว่าศัพท์เทคนิคยาว</li>
+          </ul>
+
+          <h3>ตัวอย่างสื่อสารภายใน</h3>
+          <div class="term">
+            “ขณะนี้ระดับความเสี่ยง <b>กลาง</b> จากกิจกรรมสภาพอวกาศ
+            ขอให้ทีมที่ใช้ GNSS เฝ้าระวังความคลาดเคลื่อนของสัญญาณเพิ่มขึ้นชั่วคราว”
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">อัปเดตล่าสุด: รุ่นเดโม | เอกสารนี้ออกแบบเพื่อช่วยตีความข้อมูลให้เข้าใจง่ายและใช้งานได้จริง</div>
+  </div>
+</body>
+</html>

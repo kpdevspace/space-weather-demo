@@ -13,6 +13,9 @@
     *{box-sizing:border-box} body{margin:0;font-family:'Kanit',sans-serif;color:var(--text);background:radial-gradient(900px 500px at 80% -10%,#225fb2 0,transparent 55%),linear-gradient(150deg,var(--bg),var(--bg2));min-height:100vh}
     .wrap{max-width:1180px;margin:24px auto;padding:0 14px 32px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.title{font-size:clamp(1.2rem,2.8vw,1.9rem);font-weight:700}
     .sub{color:var(--muted);font-size:.95rem}.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--glass)}
+    .top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .nav-link{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);text-decoration:none;font-size:.9rem}
+    .nav-link:hover{background:rgba(255,255,255,.12)}
     .grid{display:grid;gap:12px}.kpi{grid-template-columns:repeat(4,minmax(0,1fr));margin:12px 0}.main{grid-template-columns:minmax(360px,1fr) minmax(520px,1.6fr);align-items:stretch}
     .card{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);border-radius:16px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,.2)}
     .left-panel{display:grid;gap:12px;grid-template-rows:minmax(290px,1fr) minmax(250px,1fr);height:100%}
@@ -42,7 +45,10 @@
         <div class="title">Space Weather Early Warning Dashboard (Demo)</div>
         <div class="sub" id="meta">กำลังโหลดข้อมูลจริง...</div>
       </div>
-      <div class="pill" id="overall">สถานะรวม: ...</div>
+      <div class="top-actions">
+        <a class="nav-link" href="/help.html" title="คู่มือคำอธิบายตัวแปรและศัพท์เฉพาะ">📘 Help</a>
+        <div class="pill" id="overall">สถานะรวม: ...</div>
+      </div>
     </div>
 
     <section class="grid kpi">

@@ -15,7 +15,8 @@ node server.js
 
 เปิดเบราว์เซอร์:
 
-- http://localhost:8787
+- Dashboard: http://localhost:8787
+- Help (คู่มือคำอธิบายตัวแปร/ศัพท์): http://localhost:8787/help.html
 - Health check: http://localhost:8787/health
 - API: http://localhost:8787/api/space-weather
 
