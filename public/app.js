@@ -15,10 +15,27 @@ let provinceGeoJson;
 
 function initMap() {
   if (map) return;
-  map = L.map('riskMap', { zoomControl: true, scrollWheelZoom: true }).setView([13.5, 101], 6);
+
+  // Thailand bounds (south-west to north-east)
+  const thailandBounds = L.latLngBounds(
+    L.latLng(5.2, 97.2),
+    L.latLng(20.8, 106.5)
+  );
+
+  map = L.map('riskMap', {
+    zoomControl: true,
+    scrollWheelZoom: true,
+    maxBounds: thailandBounds,
+    maxBoundsViscosity: 1.0,
+    minZoom: 5,
+    maxZoom: 10,
+  }).setView([13.5, 101], 6);
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; OpenStreetMap',
+    noWrap: true,
+    bounds: thailandBounds,
   }).addTo(map);
 }
 
