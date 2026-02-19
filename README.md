@@ -1,5 +1,12 @@
 # Space Weather Early Warning Demo
 
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)
+![Data Source](https://img.shields.io/badge/Data-NOAA%20SWPC-1f6feb)
+![Map](https://img.shields.io/badge/Map-77%20Thai%20Provinces-0ea5e9)
+![Status](https://img.shields.io/badge/Status-Demo-orange)
+
+![Dashboard Screenshot](./public/assets/dashboard-screenshot.png)
+
 เดโมแดชบอร์ดสภาพอวกาศแบบใกล้โปรดักชัน
 - Frontend: `public/index.html` + `public/app.js`
 - Backend: `server.js` (Node.js built-in HTTP, ไม่ต้องติดตั้งแพ็กเกจเพิ่ม)
