@@ -16,7 +16,7 @@
 ## Run
 
 ```bash
-cd /Users/vikornsak/.openclaw/workspace/space-weather-demo
+cd workspace/space-weather-demo
 node server.js
 ```
 
